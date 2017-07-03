@@ -1,0 +1,7 @@
+node_modules
+dist
+*.sublime-*
+npm-debug.log
+.DS_Store
+.out/
+out*/
