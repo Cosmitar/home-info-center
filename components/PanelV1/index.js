@@ -25,7 +25,7 @@ class PanelV1 extends React.Component {
           <div className="tile is-parent">
             <article className="tile is-child" style={{ backgroundColor: 'red', height: 'auto' }}>
               <IframeGCalEmbed
-                src="mhherrera31@gmail.com"
+                src="tja6fnnfjfjnck3pbp76v3gkvg@group.calendar.google.com"
                 style={{ borderWidth: 0 }}
                 width="100%"
                 height="600"
