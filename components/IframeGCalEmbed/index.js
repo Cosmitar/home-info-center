@@ -15,6 +15,7 @@ class IframeGCalEmbed extends React.Component {
     bgcolor: PropTypes.string,
     src: PropTypes.string,
     color: PropTypes.string,
+    mode: PropTypes.string,
   };
 
   static defaultProps = {
@@ -30,6 +31,7 @@ class IframeGCalEmbed extends React.Component {
     bgcolor: '#FFFFFF',
     src: '',
     color: '#8C500B',
+    mode: 'MONTH'
   };
 
   render() {
@@ -46,6 +48,7 @@ class IframeGCalEmbed extends React.Component {
       bgcolor,
       src,
       color,
+      mode,
       ...iframe_props,
     } = this.props;
 
@@ -63,12 +66,13 @@ class IframeGCalEmbed extends React.Component {
       `bgcolor=${encodeURIComponent(bgcolor)}`,
       `src=${encodeURIComponent(src)}`,
       `color=${encodeURIComponent(color)}`,
+      `mode=${mode}`,
     ].join(joint);
 
     return (
       <iframe
-        src={`https://calendar.google.com/calendar/embed?${srcParams}`}
-        {...iframe_props} height={height}
+        src={`https://calendar.google.com/calendar/embed?${srcParams}#main_7|custom,21`}
+        {...iframe_props} height="100%" width="100%"
       ></iframe>
     );
   }
