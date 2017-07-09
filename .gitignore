@@ -6,3 +6,4 @@ npm-debug.log
 .out/
 out*/
 storybook-static
+package-lock.json

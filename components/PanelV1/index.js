@@ -1,6 +1,7 @@
 import React from 'react';
 import Clock from './../Clock';
 import IframeGCalEmbed from './../IframeGCalEmbed';
+import Forecast from './../Forecast';
 import './_index.scss';
 
 class PanelV1 extends React.Component {
@@ -10,10 +11,11 @@ class PanelV1 extends React.Component {
         <div className="tile is-vertical is-12">
           <div className="tile">
             <div className="tile is-parent is-vertical">
-              <article className="tile is-child panel-center-content" style={{ backgroundColor: 'red' }}>
+              <article className="tile is-child panel-center-content" style={{ backgroundColor: 'transparent' }}>
                 <Clock className="digital-clock"/>
               </article>
-              <article className="tile is-child" style={{ backgroundColor: 'red' }}>
+              <article className="tile is-child" style={{ backgroundColor: 'transparent' }}>
+                <Forecast lat={-32.0967} lon={-63.7941} name='Córdoba' units="ca" />
               </article>
             </div>
             <div className="tile is-parent">
