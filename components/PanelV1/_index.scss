@@ -12,3 +12,8 @@
     display: flex;
     justify-content: center;
 }
+
+.is-child.is-calendar {
+    margin-bottom: -474px !important;
+    overflow: hidden;
+}

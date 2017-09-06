@@ -3,9 +3,28 @@ import Clock from './../Clock';
 import IframeGCalEmbed from './../IframeGCalEmbed';
 import Forecast from './../Forecast';
 import './_index.scss';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+// import '!style-loader!css-loader!react-big-calendar/lib/css/react-big-calendar.css';
+import BigCalendar from 'react-big-calendar';
+import moment from 'moment';
+
+// Setup the localizer by providing the moment (or globalize) Object
+// to the correct localizer.
+BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
 class PanelV1 extends React.Component {
   render() {
+    const eventsList = [{
+      'title': 'All Day Event',
+      // 'allDay': true,
+      'start': new Date(2017, 9, 0),
+      'end': new Date(2017, 9, 1)
+    },
+    {
+      'title': 'Long Event',
+      'start': new Date(2017, 9, 7),
+      'end': new Date(2017, 9, 10)
+    }];
     return (
       <div className="tile is-ancestor" style={{ width: 900, height: 1440, border: '1px solid black' }}>
         <div className="tile is-vertical is-12">
@@ -25,14 +44,19 @@ class PanelV1 extends React.Component {
             </div>
           </div>
           <div className="tile is-parent">
-            <article className="tile is-child" style={{ backgroundColor: 'red', height: 'auto' }}>
-              <IframeGCalEmbed
-                src="tja6fnnfjfjnck3pbp76v3gkvg@group.calendar.google.com"
-                style={{ borderWidth: 0 }}
-                width="100%"
-                height="600"
-                frameBorder="0"
-                scrolling="no"
+            <article
+              className="tile is-child is-calendar"
+              style={{
+                backgroundColor: 'transparent',
+                height: 'auto'
+              }}
+            >
+              <BigCalendar
+                views=""
+                toolbar={false}
+                events={eventsList}
+                startAccessor='startDate'
+                endAccessor='endDate'
               />
             </article>
           </div>

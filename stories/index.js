@@ -8,6 +8,7 @@ import Clock from './../components/Clock';
 import IframeGCalEmbed from './../components/IframeGCalEmbed';
 
 import PanelV1 from './../components/PanelV1';
+import APITest from './../components/APITest';
 
 storiesOf('Individual Components', module)
   .add('Calendar', () => (
@@ -26,3 +27,6 @@ storiesOf('Individual Components', module)
 
 storiesOf('Panels', module)
   .add('V1', () => <PanelV1 />);
+
+storiesOf('Devel', module)
+  .add('API', () => <APITest />);
