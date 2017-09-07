@@ -7,32 +7,123 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 // import '!style-loader!css-loader!react-big-calendar/lib/css/react-big-calendar.css';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
+import api from './../../api_client';
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
 
 class PanelV1 extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      status: 'unknown',
+      clientId: '',
+      calendarEvents: [],
+    };
+
+    this._refreshData = this._refreshData.bind(this);
+  }
+
+  componentWillMount() {
+    if (!localStorage.clientId) {
+      this._register();
+    } else {
+      this.setState({ clientId: localStorage.clientId });
+      setTimeout(this._getConfig.bind(this), 0);
+    }
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
+  _register() {
+    this.setState({ status: 'busy' });
+    api.register().then((r) => {
+      if (r.ok) {
+        localStorage.clientId = r.clientId;
+        setTimeout(this._getConfig.bind(this), 0);
+        this.setState({ status: 'registered', clientId: localStorage.clientId });
+      } else {
+        this.setState({ status: r.error });
+      }
+    });
+  }
+
+  _refreshData() {
+    if (this.state.status === 'config ready') {
+      this._getConfig();
+    }
+  }
+
+  _getConfig() {
+    this.setState({ status: 'busy' });
+    api.getConfigs(localStorage.clientId).then((r) => {
+      if (r.ok) {
+        // console.log(r.configs);
+        if (Object.keys(r.configs).length) {
+          this.setState({ status: 'config ready' });
+          if (!this.intervalId) {
+            this.intervalId = setInterval(this._refreshData, 1000 * 30);
+          }
+
+          if (r.configs['gcalendar']) {
+            this._loadCalendarEvents();
+          }
+        } else {
+          this.setState({ status: 'unconfigured terminal.' });
+        }
+      } else {
+        this.setState({ status: r.error });
+      }
+    });
+  }
+
+  _loadCalendarEvents() {
+    api.getCalendarEvents(localStorage.clientId).then((r) => {
+      if (r.ok) {
+        console.log(r.events);
+        this.setState({
+          calendarEvents: r.events.map((gce) => {
+            return {
+              title: gce.summary,
+              allDay: gce.start.date && !gce.start.dateTime,
+              start: new Date(Date.parse(gce.start.date || gce.start.dateTime)),
+              end: new Date(Date.parse(gce.end.date || gce.end.dateTime)),
+            }
+          }),
+        });
+      }
+    });
+  }
+
   render() {
-    const eventsList = [{
-      'title': 'All Day Event',
-      // 'allDay': true,
-      'start': new Date(2017, 9, 0),
-      'end': new Date(2017, 9, 1)
-    },
-    {
-      'title': 'Long Event',
-      'start': new Date(2017, 9, 7),
-      'end': new Date(2017, 9, 10)
-    }];
     return (
       <div className="tile is-ancestor" style={{ width: 900, height: 1440, border: '1px solid black' }}>
         <div className="tile is-vertical is-12">
           <div className="tile">
             <div className="tile is-parent is-vertical">
-              <article className="tile is-child panel-center-content" style={{ backgroundColor: 'transparent' }}>
-                <Clock className="digital-clock"/>
-              </article>
+              <div className="tile is-parent is-vertical" style={{ backgroundColor: 'transparent' }}>
+                <article>
+                  <Clock className="digital-clock"/>
+                </article>
+                <article className="is-child panel-center-content">
+                  <a
+                    className="button is-white is-loading"
+                    style={{ display: this.state.status === 'busy' ? 'block' : 'none' }}
+                  >
+                  ->
+                  </a>
+                  <a
+                    className="button is-white"
+                    href={`http://homeinfocenter.app/config/${this.state.clientId}`}
+                    target="_blank"
+                  >
+                    {`http://homeinfocenter.app/config/${this.state.clientId}`}
+                  </a>
+                </article>
+              </div>
               <article className="tile is-child" style={{ backgroundColor: 'transparent' }}>
                 <Forecast lat={-32.0967} lon={-63.7941} name='Córdoba' units="ca" />
               </article>
@@ -45,18 +136,15 @@ class PanelV1 extends React.Component {
           </div>
           <div className="tile is-parent">
             <article
-              className="tile is-child is-calendar"
+              className="tile is-child"
               style={{
                 backgroundColor: 'transparent',
                 height: 'auto'
               }}
             >
               <BigCalendar
-                views=""
                 toolbar={false}
-                events={eventsList}
-                startAccessor='startDate'
-                endAccessor='endDate'
+                events={this.state.calendarEvents}
               />
             </article>
           </div>
