@@ -1,4 +1,4 @@
-const API_ENDPOINT = 'http://homeinfocenter.app/api/v1';
+const API_ENDPOINT = `${process.env.STORYBOOK_SERVER_URL}/api/v1`;
 const dataToQueryString = (data) => {
   const vars = [];
   Object.keys(data).forEach((k) => {

@@ -64,7 +64,7 @@ export default class APITest extends React.Component {
 
   render() {
     const configLink = this.state.clientId ?
-      <a href={`http://homeinfocenter.app/config/${this.state.clientId}`} target="blank">configuration link</a>
+      <a href={`${process.env.STORYBOOK_SERVER_URL}/config/${this.state.clientId}`} target="blank">configuration link</a>
       :
       null;
     const eventLists = this.state.events.length ?

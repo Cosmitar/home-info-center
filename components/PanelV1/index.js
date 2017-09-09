@@ -12,7 +12,7 @@ import api from './../../api_client';
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
-
+console.log(process.env);
 class PanelV1 extends React.Component {
   constructor(props) {
     super(props);
@@ -117,10 +117,10 @@ class PanelV1 extends React.Component {
                   </a>
                   <a
                     className="button is-white"
-                    href={`http://homeinfocenter.app/config/${this.state.clientId}`}
+                    href={`${process.env.STORYBOOK_SERVER_URL}/config/${this.state.clientId}`}
                     target="_blank"
                   >
-                    {`http://homeinfocenter.app/config/${this.state.clientId}`}
+                    {`${process.env.STORYBOOK_SERVER_URL}/config/${this.state.clientId}`}
                   </a>
                 </article>
               </div>
