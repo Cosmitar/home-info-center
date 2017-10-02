@@ -99,8 +99,9 @@ class PanelV1 extends React.Component {
   }
 
   render() {
+    // style={{ width: 900, height: 1440, border: '1px solid black' }}
     return (
-      <div className="tile is-ancestor" style={{ width: 900, height: 1440, border: '1px solid black' }}>
+      <div className="tile is-ancestor" style={{ minHeight: 1440 }}>
         <div className="tile is-vertical is-12">
           <div className="tile">
             <div className="tile is-parent is-vertical">
