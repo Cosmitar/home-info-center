@@ -24,6 +24,23 @@ class Forecast extends React.Component {
     height: 345,
   }
 
+  constructor(props) {
+    super(props);
+    this._refreshData = this._refreshData.bind(this);
+  }
+
+  _refreshData() {
+    this.forceUpdate();
+  }
+
+  componentWillMount() {
+    this.intervalId = setInterval(this._refreshData, 1000 * 60 * 30); // 30 minutes
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
   render() {
     const {
       lat,
