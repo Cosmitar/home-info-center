@@ -1,6 +1,12 @@
 const path = require('path');
+const webpack = require('webpack');
 
 module.exports = {
+  plugins: [
+    new webpack.DefinePlugin({
+      __VERSION: JSON.stringify(require("./../package.json").version)
+    })
+  ],
   module: {
     rules: [
       {

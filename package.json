@@ -1,6 +1,6 @@
 {
   "name": "home-info-center",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Home info center",
   "main": "index.js",
   "scripts": {

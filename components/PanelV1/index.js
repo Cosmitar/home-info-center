@@ -150,6 +150,11 @@ class PanelV1 extends React.Component {
             </article>
           </div>
         </div>
+        <div style={{ position: 'absolute', top: 0, left:0 }}>
+          <p style={{ fontSize: '8px' }}>
+            v{__VERSION}
+          </p>
+        </div>
       </div>
     );
   }
