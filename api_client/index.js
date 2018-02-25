@@ -57,6 +57,23 @@ const client = {
       return res;
     });
   },
+  getMetar: (clientId) => {
+    return fetch(`${API_ENDPOINT}/terminal/${ clientId }/config/metar`, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+      body: null,
+    }).then((response) => {
+      let res = response;
+
+      if (res.status === 200) {
+        res = res.json();
+      }
+
+      return res;
+    });
+  },
   getCalendarEvents: (clientId) => {
     return fetch(`${API_ENDPOINT}/terminal/${ clientId }/config/gcalendar`, {
       method: 'GET',

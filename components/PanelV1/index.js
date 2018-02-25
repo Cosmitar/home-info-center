@@ -12,7 +12,7 @@ import api from './../../api_client';
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
 BigCalendar.momentLocalizer(moment); // or globalizeLocalizer
-console.log(process.env);
+// console.log(process.env);
 class PanelV1 extends React.Component {
   constructor(props) {
     super(props);
@@ -20,6 +20,7 @@ class PanelV1 extends React.Component {
       status: 'unknown',
       clientId: '',
       calendarEvents: [],
+      metars: [],
     };
 
     this._refreshData = this._refreshData.bind(this);
@@ -71,6 +72,9 @@ class PanelV1 extends React.Component {
           if (r.configs['gcalendar']) {
             this._loadCalendarEvents();
           }
+          if (r.configs['metar'] || true) {
+            this._loadMetar()
+          }
         } else {
           this.setState({ status: 'unconfigured terminal.' });
         }
@@ -80,10 +84,20 @@ class PanelV1 extends React.Component {
     });
   }
 
+  _loadMetar() {
+    api.getMetar(localStorage.clientId).then((r) => {
+      if (r.ok) {
+        console.log(r.data);
+        this.setState({
+          metars: r.data,
+        });
+      }
+    });
+  }
+
   _loadCalendarEvents() {
     api.getCalendarEvents(localStorage.clientId).then((r) => {
       if (r.ok) {
-        console.log(r.events);
         this.setState({
           calendarEvents: r.events.map((gce) => {
             return {
@@ -131,7 +145,11 @@ class PanelV1 extends React.Component {
             </div>
             <div className="tile is-parent">
               <article className="tile is-child notification" style={{ backgroundColor: '#fb0' }}>
-                <p class="title">Notes</p>
+                <p class="title">METAR</p>
+                {this.state.metars.map(info => (
+                  <div style={{ marginBottom: 10 }}>
+                    {info}
+                  </div>))}
               </article>
             </div>
           </div>
