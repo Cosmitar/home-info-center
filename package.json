@@ -1,6 +1,6 @@
 {
   "name": "home-info-center",
-  "version": "0.1.1",
+  "version": "0.2.1",
   "description": "Home info center",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,7 @@
   "license": "ISC",
   "dependencies": {
     "animate.css": "^3.5.2",
+    "lodash": "^4.17.5",
     "moment": "^2.18.1",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",

@@ -8,6 +8,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import BigCalendar from 'react-big-calendar';
 import moment from 'moment';
 import api from './../../api_client';
+import { map } from 'lodash';
 
 // Setup the localizer by providing the moment (or globalize) Object
 // to the correct localizer.
@@ -20,7 +21,7 @@ class PanelV1 extends React.Component {
       status: 'unknown',
       clientId: '',
       calendarEvents: [],
-      metars: [],
+      avweather: [],
     };
 
     this._refreshData = this._refreshData.bind(this);
@@ -89,7 +90,7 @@ class PanelV1 extends React.Component {
       if (r.ok) {
         console.log(r.data);
         this.setState({
-          metars: r.data,
+          avweather: r.data,
         });
       }
     });
@@ -145,11 +146,18 @@ class PanelV1 extends React.Component {
             </div>
             <div className="tile is-parent">
               <article className="tile is-child notification" style={{ backgroundColor: '#fb0' }}>
-                <p class="title">METAR</p>
-                {this.state.metars.map(info => (
-                  <div style={{ marginBottom: 10 }}>
-                    {info}
-                  </div>))}
+                <p class="title"><b>AVIATION WEATHER</b></p>
+                {map(this.state.avweather.metars, (metar, airportCode) => {
+                  const taf = this.state.avweather.tafs[airportCode];
+                  return (
+                    <div style={{ marginBottom: 10 }} key={airportCode}>
+                      {metar.map((m, i) => (<p style={{ fontSize: 15 }} key={`${airportCode}${i}`}>{m}</p>))}
+                      <br />
+                      <p style={{ fontSize: 15 }}>{taf}</p>
+                      <hr />
+                    </div>
+                  )
+                })}
               </article>
             </div>
           </div>
