@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 const API_ENDPOINT = `${process.env.STORYBOOK_SERVER_URL}/api/v1`;
 const dataToQueryString = (data) => {
   const vars = [];

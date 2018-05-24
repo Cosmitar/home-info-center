@@ -27,11 +27,27 @@ class PanelV1 extends React.Component {
     this._refreshData = this._refreshData.bind(this);
   }
 
+  _getClientId() {
+    if (localStorage) {
+      return localStorage.clientId;
+    } else {
+      return document.cookie.replace(/(?:(?:^|.*;\s*)clientId\s*\=\s*([^;]*).*$)|^.*$/, '$1');
+    }
+  }
+
+  _setClientId(id) {
+    if (localStorage) {
+      localStorage.clientId = id;
+    } else {
+      document.cookie = `clientId=${id}`;
+    }
+  }
+
   componentWillMount() {
-    if (!localStorage.clientId) {
+    if (!this._getClientId()) {
       this._register();
     } else {
-      this.setState({ clientId: localStorage.clientId });
+      this.setState({ clientId: this._getClientId() });
       setTimeout(this._getConfig.bind(this), 0);
     }
   }
@@ -44,9 +60,9 @@ class PanelV1 extends React.Component {
     this.setState({ status: 'busy' });
     api.register().then((r) => {
       if (r.ok) {
-        localStorage.clientId = r.clientId;
+        this._setClientId(r.clientId);
         setTimeout(this._getConfig.bind(this), 0);
-        this.setState({ status: 'registered', clientId: localStorage.clientId });
+        this.setState({ status: 'registered', clientId: r.clientId });
       } else {
         this.setState({ status: r.error });
       }
@@ -61,7 +77,7 @@ class PanelV1 extends React.Component {
 
   _getConfig() {
     this.setState({ status: 'busy' });
-    api.getConfigs(localStorage.clientId).then((r) => {
+    api.getConfigs(this._getClientId()).then((r) => {
       if (r.ok) {
         // console.log(r.configs);
         if (Object.keys(r.configs).length) {
@@ -86,7 +102,7 @@ class PanelV1 extends React.Component {
   }
 
   _loadMetar() {
-    api.getMetar(localStorage.clientId).then((r) => {
+    api.getMetar(this._getClientId()).then((r) => {
       if (r.ok) {
         console.log(r.data);
         this.setState({
@@ -97,7 +113,7 @@ class PanelV1 extends React.Component {
   }
 
   _loadCalendarEvents() {
-    api.getCalendarEvents(localStorage.clientId).then((r) => {
+    api.getCalendarEvents(this._getClientId()).then((r) => {
       if (r.ok) {
         this.setState({
           calendarEvents: r.events.map((gce) => {
