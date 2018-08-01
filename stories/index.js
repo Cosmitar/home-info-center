@@ -8,6 +8,7 @@ import Clock from './../components/Clock';
 import IframeGCalEmbed from './../components/IframeGCalEmbed';
 
 import PanelV1 from './../components/PanelV1';
+import PanelV2 from './../components/PanelV2';
 import APITest from './../components/APITest';
 
 storiesOf('Individual Components', module)
@@ -26,7 +27,9 @@ storiesOf('Individual Components', module)
   .add('Clock', () => <Clock />);
 
 storiesOf('Panels', module)
-  .add('V1', () => <PanelV1 />);
+  .add('V1', () => <PanelV1 />)
+  .add('V2', () => <PanelV2 />);
+
 
 storiesOf('Devel', module)
   .add('API', () => <APITest />);
