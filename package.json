@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "STORYBOOK_SERVER_URL=https://www.homeinfocenter.afterseven.com.ar start-storybook -s ./public -p 6006",
     "storybook-local": "STORYBOOK_SERVER_URL=http://homeinfocenter.test start-storybook -s ./public -p 6006",
-    "build-storybook": "STORYBOOK_SERVER_URL=https://homeinfocenter.afterseven.com.ar build-storybook",
+    "build-storybook": "STORYBOOK_SERVER_URL=https://www.homeinfocenter.afterseven.com.ar build-storybook",
     "deploy-storybook": "storybook-to-ghpages"
   },
   "author": "Cosmitar",
