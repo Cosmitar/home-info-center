@@ -121,7 +121,7 @@ class PanelV2 extends React.Component {
     try {
       if (r.ok) {
         this.setState({
-          calendarEvents: r.events.map((gce) => {
+          calendarEvents: map(r.events, (gce) => {
             const allDay = gce.start.date && !gce.start.dateTime;
             const startDate = moment(gce.start.date || gce.start.dateTime).format();
             const endDate = moment(gce.end.date || gce.end.dateTime).format();
@@ -161,7 +161,7 @@ class PanelV2 extends React.Component {
                 const taf = this.state.avweather.tafs[airportCode];
                 return (
                   <div className="avw-content" key={airportCode}>
-                    {metar.map((m, i) => (<p key={`${airportCode}${i}`}>{m}</p>))}
+                    {map(metar, (m, i) => (<p key={`${airportCode}${i}`}>{m}</p>))}
                     <br />
                     <p>{taf}</p>
                     <hr />
