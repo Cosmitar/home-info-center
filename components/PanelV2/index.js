@@ -41,9 +41,11 @@ const runTick = () => {
   console.log('TICK');
   TIME_MANAGER.listeners.forEach(l => {
     console.log('run tick', TIME_MANAGER.interval);
+    console.log(moment() - l.lastRun, l.interval);
     if (moment() - l.lastRun >= l.interval) {
       console.log('call action', l);
       l.action();
+      l.lastRun = moment();
     }
   });
 
@@ -56,11 +58,13 @@ const runTick = () => {
 };
 const startTick = () => TIME_MANAGER.tId = setInterval(runTick, TIME_MANAGER.interval);
 const stopTick = () => clearInterval(TIME_MANAGER.tId);
-const addTickListener = (l, interval = TIME_MANAGER.interval) => [...TIME_MANAGER.listeners, {
-  lastRun: moment(),
-  action: l,
-  interval,
-}];
+const addTickListener = (l, interval = TIME_MANAGER.interval) => {
+  TIME_MANAGER.listeners = [...TIME_MANAGER.listeners, {
+    lastRun: moment(),
+    action: l,
+    interval,
+  }];
+};
 // =========
 
 class PanelV2 extends React.Component {
