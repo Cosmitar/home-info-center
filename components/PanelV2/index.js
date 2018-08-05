@@ -12,6 +12,8 @@ import ListEvents from './../ListEvents';
 import styles from './_index.scss';
 
 // helpers
+const METAR_REFRESH_INTERVAL = 1000 * 60 * 15; // 15 minutes
+const GCAL_REFRESH_INTERVAL = 1000 * 60 * 30; // 30 minutes
 const getClientId = () => {
   console.log('LOCAL?', window.localStorage);
   if (window.localStorage) {
@@ -29,6 +31,36 @@ const setClientId = (id) => {
   }
 }
 
+const TIME_MANAGER = {
+  tId: 0,
+  listeners: [],
+  interval: 30000, // tick interval in ms
+  lastRun: moment(),
+};
+const runTick = () => {
+  console.log('TICK');
+  TIME_MANAGER.listeners.forEach(l => {
+    console.log('run tick', TIME_MANAGER.interval);
+    if (moment() - l.lastRun >= l.interval) {
+      console.log('call action', l);
+      l.action();
+    }
+  });
+
+  if (TIME_MANAGER.lastRun.format('DD') !== moment().format('DD')) {
+    console.log('RELOAD BY DAY CHANGE');
+    window.location.reload(true);
+  }
+
+  TIME_MANAGER.lastRun = moment();
+};
+const startTick = () => TIME_MANAGER.tId = setInterval(runTick, TIME_MANAGER.interval);
+const stopTick = () => clearInterval(TIME_MANAGER.tId);
+const addTickListener = (l, interval = TIME_MANAGER.interval) => [...TIME_MANAGER.listeners, {
+  lastRun: moment(),
+  action: l,
+  interval,
+}];
 // =========
 
 class PanelV2 extends React.Component {
@@ -46,6 +78,14 @@ class PanelV2 extends React.Component {
     } else {
       this._saveClientId(clientId);
     }
+
+    startTick();
+    addTickListener(() => this._loadMetar(), METAR_REFRESH_INTERVAL);
+    addTickListener(() => this._loadCalendarEvents, GCAL_REFRESH_INTERVAL);
+  }
+
+  componentWillUnmount() {
+    stopTick();
   }
 
   _saveClientId = (clientId) => {
