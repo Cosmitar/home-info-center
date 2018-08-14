@@ -67,8 +67,8 @@ const addTickListener = (l, interval = TIME_MANAGER.interval) => {
 };
 // =========
 
-const getEventProp = (event, start) => {
-  return { className: moment(start) < moment() ? 'cls-event-due' : '' };
+const getEventProp = (event, start, end) => {
+  return { className: moment(end) < moment() ? 'cls-event-due' : '' };
 }
 
 class PanelV2 extends React.Component {

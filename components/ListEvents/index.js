@@ -5,7 +5,7 @@ export default ({ events, ignorePast }) => (
   <ul>
     {
       events
-        .filter(e => (ignorePast && moment(e.start) > moment()))
+        .filter(e => (ignorePast && moment(e.end) > moment()))
         .map(e => {
         const diff = moment() - moment(e.start).add(1, 'day');
         const humanDiff = `${diff < 0 ? 'en' : 'hace'} ${moment.duration(diff).locale('es').humanize()}`;
