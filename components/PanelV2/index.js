@@ -38,19 +38,19 @@ const TIME_MANAGER = {
   lastRun: moment(),
 };
 const runTick = () => {
-  console.log('TICK');
+  // console.log('TICK');
   TIME_MANAGER.listeners.forEach(l => {
-    console.log('run tick', TIME_MANAGER.interval);
-    console.log(moment() - l.lastRun, l.interval);
+    // console.log('run tick', TIME_MANAGER.interval);
+    // console.log(moment() - l.lastRun, l.interval);
     if (moment() - l.lastRun >= l.interval) {
-      console.log('call action', l);
+      // console.log('call action', l);
       l.action();
       l.lastRun = moment();
     }
   });
 
   if (TIME_MANAGER.lastRun.format('DD') !== moment().format('DD')) {
-    console.log('RELOAD BY DAY CHANGE');
+    // console.log('RELOAD BY DAY CHANGE');
     window.location.reload(true);
   }
 
@@ -66,6 +66,10 @@ const addTickListener = (l, interval = TIME_MANAGER.interval) => {
   }];
 };
 // =========
+
+const getEventProp = (event, start) => {
+  return { className: moment(start) < moment() ? 'cls-event-due' : '' };
+}
 
 class PanelV2 extends React.Component {
   state = {
@@ -221,6 +225,7 @@ class PanelV2 extends React.Component {
             <BigCalendar
               toolbar={false}
               events={this.state.calendarEvents}
+              eventPropGetter={getEventProp}
             />
           </column>
           <column className="box">
@@ -243,7 +248,7 @@ class PanelV2 extends React.Component {
 
             <section>
               <column className="box">
-                <ListEvents events={ this.state.calendarEvents } />
+                <ListEvents events={ this.state.calendarEvents } ignorePast />
               </column>
             </section>
           </column>

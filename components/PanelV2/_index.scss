@@ -66,5 +66,22 @@ body {
 			margin: 5px 0;
 		}
 	}
+
+	.rbc-calendar {
+		.rbc-event {
+			padding: 0;
+			font-size: small;
+
+			&.cls-event-due {
+				.rbc-event-content {
+					background-color: #ccc;
+				}
+			}
+		}
+
+		.rbc-date-cell {
+			font-size: small;
+		}
+	}
 }
 
