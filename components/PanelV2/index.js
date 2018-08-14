@@ -89,7 +89,7 @@ class PanelV2 extends React.Component {
 
     startTick();
     addTickListener(() => this._loadMetar(), METAR_REFRESH_INTERVAL);
-    addTickListener(() => this._loadCalendarEvents, GCAL_REFRESH_INTERVAL);
+    addTickListener(() => this._loadCalendarEvents(), GCAL_REFRESH_INTERVAL);
   }
 
   componentWillUnmount() {
